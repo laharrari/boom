@@ -45,11 +45,9 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
     this.timer = new Timer();
-    console.log('game initialized');
 }
 
 GameEngine.prototype.start = function () {
-    console.log("starting game");
     var that = this;
     (function gameLoop() {
         that.loop();
@@ -58,7 +56,6 @@ GameEngine.prototype.start = function () {
 }
 
 GameEngine.prototype.startInput = function () {
-    console.log('Starting input');
     var that = this;
 
     var getXandY = function (e) {
@@ -68,34 +65,13 @@ GameEngine.prototype.startInput = function () {
         return { x: x, y: y };
     }
 
-    this.ctx.canvas.addEventListener("mousemove", function (e) {
-        //console.log(getXandY(e));
-        that.mouse = getXandY(e);
-    }, false);
-
     this.ctx.canvas.addEventListener("click", function (e) {
-        //console.log(getXandY(e));
+        console.log(getXandY(e));
         that.click = getXandY(e);
     }, false);
-
-    this.ctx.canvas.addEventListener("wheel", function (e) {
-        //console.log(getXandY(e));
-        that.wheel = e;
-        //       console.log(e.wheelDelta);
-        e.preventDefault();
-    }, false);
-
-    this.ctx.canvas.addEventListener("contextmenu", function (e) {
-        //console.log(getXandY(e));
-        that.rightclick = getXandY(e);
-        e.preventDefault();
-    }, false);
-
-    console.log('Input started');
 }
 
 GameEngine.prototype.addEntity = function (entity) {
-    console.log('added entity');
     this.entities.push(entity);
 }
 

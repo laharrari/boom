@@ -1,0 +1,14 @@
+body {
+    
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 800px;
+    height: 800px;
+    position: relative;
+}
