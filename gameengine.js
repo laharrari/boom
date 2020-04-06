@@ -1,5 +1,9 @@
 // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 
+// CONSTANTS
+var tile_size = 48;
+var myPlayer;
+
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -37,6 +41,12 @@ function GameEngine() {
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.debug = false;
+
+    this.keyUp = false;
+    this.keyLeft = false;
+    this.keyRight = false;
+    this.keyDown = false;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -53,6 +63,37 @@ GameEngine.prototype.start = function () {
         that.loop();
         requestAnimFrame(gameLoop, that.ctx.canvas);
     })();
+
+    var map = [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ];
+
+    for (var i = 0; i < map.length; i++) {
+        for (var j = 0; j < map[i].length; j++) {
+            var x = tile_size * i;
+            var y = tile_size * j;
+            if (map[i][j] === 1) {
+                GAME_ENGINE.addEntity(new wall(x, y));
+            } else if (map[i][j] === 2) {
+                myPlayer = new player(x, y);
+                GAME_ENGINE.addEntity(myPlayer);
+            }
+        }
+    }
 }
 
 GameEngine.prototype.startInput = function () {
@@ -68,6 +109,41 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("click", function (e) {
         console.log(getXandY(e));
         that.click = getXandY(e);
+    }, false);
+    
+    this.ctx.canvas.addEventListener("keydown", function (e) {
+        e.preventDefault();
+
+        if (e.code === "ArrowUp") {
+            that.keyUp = true;
+        } else if (e.code === "ArrowLeft") {
+            that.keyLeft = true;
+        } else if (e.code === "ArrowRight") {
+            that.keyRight = true;
+        } else if (e.code === "ArrowDown") {
+            that.keyDown = true;
+        }
+
+        //toggle debug mode
+        if (e.code === "KeyU") {
+            if (that.debug === false) {
+                that.debug = true;
+            } else {
+                that.debug = false;
+            }
+        }
+    }, false);
+
+    this.ctx.canvas.addEventListener("keyup", function (e) {
+        if (e.code === "ArrowUp") {
+            that.keyUp = false;
+        } else if (e.code === "ArrowLeft") {
+            that.keyLeft = false;
+        } else if (e.code === "ArrowRight") {
+            that.keyRight = false;
+        } else if (e.code === "ArrowDown") {
+            that.keyDown = false;
+        }
     }, false);
 }
 
