@@ -1,14 +1,15 @@
 body {
-    
+    font-family: Futura;
 }
 
 canvas {
     border: 1px solid black;
+    background-color: burlywood;
 }
 
 .wrapper {
     margin: 0 auto;
-    width: 800px;
-    height: 800px;
+    width: 720px;
+    height: 720px;
     position: relative;
 }
