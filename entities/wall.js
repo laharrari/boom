@@ -5,7 +5,7 @@ class Wall {
         this.width = 48;
         this.height = 48;
         this.image = new Image();
-        this.image.src = "./wall.png";
+        this.image.src = "./img/entities/wall.png";
         this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
     }
     update() {
