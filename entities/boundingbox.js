@@ -1,18 +1,16 @@
-class BoundingBox {
-    constructor(x, y, width, height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.left = x;
-        this.top = y;
-        this.right = this.left + width;
-        this.bottom = this.top + height;
-    }
-    collide(oth) {
-        if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top)
-            return true;
-        return false;
-    }
+function BoundingBox(theX, theY, theWidth, theHeight) {
+    this.x = theX;
+    this.y = theY;
+    this.width = theWidth;
+    this.height = theHeight;
+    this.left = theX;
+    this.top = theY;
+    this.right = this.left + theWidth;
+    this.bottom = this.top + theHeight;
 }
 
+BoundingBox.prototype.collide = function () {
+    if (this.right > oth.left && this.left < oth.right && this.top < oth.bottom && this.bottom > oth.top)
+    return true;
+    return false;
+}
