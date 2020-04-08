@@ -3,16 +3,20 @@
 // CONSTANTS
 var tile_size = 48;
 var myPlayer;
+const MAP_COMPONENTS_IDX = 0;
+const PLAYER_IDX = 1;
+const BALLOONS_IDX = 2;
+const POWERUPS_IDX = 3;
 
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame ||
-            window.oRequestAnimationFrame ||
-            window.msRequestAnimationFrame ||
-            function (/* function */ callback, /* DOMElement */ element) {
-                window.setTimeout(callback, 1000 / 60);
-            };
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (/* function */ callback, /* DOMElement */ element) {
+            window.setTimeout(callback, 1000 / 60);
+        };
 })();
 
 
@@ -33,7 +37,7 @@ Timer.prototype.tick = function () {
 }
 
 function GameEngine() {
-    this.entities = [];
+    this.entities = [[], [], [], []];
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
@@ -81,9 +85,10 @@ GameEngine.prototype.startInput = function () {
 
     this.ctx.canvas.addEventListener("click", function (e) {
         console.log(getXandY(e));
+        console.log(GAME_ENGINE.entities);
         that.click = getXandY(e);
     }, false);
-    
+
     this.ctx.canvas.addEventListener("keydown", function (e) {
         e.preventDefault();
 
@@ -125,34 +130,79 @@ GameEngine.prototype.startInput = function () {
 }
 
 GameEngine.prototype.addEntity = function (entity) {
-    this.entities.push(entity);
+    if (entity instanceof Player) {
+        this.entities[PLAYER_IDX].push(entity);
+    } 
+    // else if (entity instanceof PowerUp) {
+    //     this.entities[POWERUPS_IDX].push(entity);
+    // } else if (entity instanceof Balloon) {
+    //     this.entities[BALLOONS_IDX].push(entity);
+    // } 
+    else {
+        this.entities[MAP_COMPONENTS_IDX].push(entity);
+    }
+}
+
+GameEngine.prototype.removeEntity = function (entity) {
+    let idx;
+    if (entity instanceof Player) {
+        idx = this.entities[PLAYER_IDX].indexOf(entity);
+        if (idx > -1) {
+            this.entities[PLAYER_IDX].splice(idx, 1);
+        }
+    } 
+    // else if (entity instanceof PowerUp) {
+    //     idx = this.entities[POWERUPS_IDX].indexOf(entity);
+    //     if (idx > -1) {
+    //         this.entities[POWERUPS_IDX].splice(idx, 1);
+    //     }
+    // } else if (entity instanceof Balloon) {
+    //     idx = this.entities[BALLOONS_IDX].indexOf(entity);
+    //     if (idx > -1) {
+    //         this.entities[BALLOONS_IDX].splice(idx, 1);
+    //     }
+    // } 
+    else {
+        idx = this.entities[MAP_COMPONENTS_IDX].indexOf(entity);
+        if (idx > -1) {
+            this.entities[MAP_COMPONENTS_IDX].splice(idx, 1);
+        }
+    }
 }
 
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
-    for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].draw(this.ctx);
+    for (var i = this.entities.length - 1; i >= 0; i--) {
+        for (var j = 0; j < this.entities[i].length; j++) {
+            this.entities[i][j].draw(this.ctx);
+        }
     }
     this.ctx.restore();
 }
 
 GameEngine.prototype.update = function () {
-    var entitiesCount = this.entities.length;
 
-    for (var i = 0; i < entitiesCount; i++) {
-        var entity = this.entities[i];
+    for (var i = 0; i < this.entities.length; i++) {
+        for (var j = 0; j < this.entities[i].length; j++) {
+            var entity = this.entities[i][j];
 
-        if (!entity.removeFromWorld) {
-            entity.update();
+            if (!entity.removeFromWorld) {
+                entity.update();
+            }
         }
     }
 
-    for (var i = this.entities.length - 1; i >= 0; --i) {
-        if (this.entities[i].removeFromWorld) {
-            this.entities.splice(i, 1);
+    for (var i = 0; i < this.entities.length; i++) {
+        for (var j = 0; j < this.entities[i].length; j++) {
+            var entity = this.entities[i][j];
+
+            if (entity.removeFromWorld) {
+                this.removeEntity(entity);
+            }
         }
     }
+
 }
 
 GameEngine.prototype.loop = function () {
