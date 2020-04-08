@@ -19,9 +19,13 @@ Player.prototype.update = function () {
         this.x -= this.speed;
     }
     
-    if (GAME_ENGINE.keySpace) {
+    if (GAME_ENGINE.keySpace && GAME_ENGINE.spaceTimer === 0) {
+        GAME_ENGINE.spaceTimer = 48;
         GAME_ENGINE.addEntity(new Balloon(this.x, this.y));
+    }
 
+    if (GAME_ENGINE.spaceTimer > 0) {
+        GAME_ENGINE.spaceTimer--;
     }
 
     this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);

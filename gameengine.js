@@ -48,6 +48,7 @@ function GameEngine() {
     this.keyRight = false;
     this.keyDown = false;
     this.keySpace = false;
+    this.spaceTimer = 0;
 }
 
 GameEngine.prototype.init = function (ctx) {

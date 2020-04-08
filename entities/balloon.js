@@ -15,7 +15,7 @@ function Balloon(theX, theY) {
 Balloon.prototype.update = function () {
     if (this.timer === 0) {
         var count = 1;
-        var size = 10;
+        var size = 1;
 
         while (count <= size) {
             GAME_ENGINE.addEntity(new Splash(this.x + (count * 48), this.y));
@@ -24,10 +24,9 @@ Balloon.prototype.update = function () {
             GAME_ENGINE.addEntity(new Splash(this.x, this.y - (count * 48)));
             count++;
         }
-
         this.removeFromWorld = true;
     }
-
+    
     this.timer--;
 }
 
