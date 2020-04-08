@@ -1,31 +1,29 @@
 function Player(theX, theY) {
     Entity.call(this, GAME_ENGINE, theX, theY);
+    this.x = theX;
+    this.y = theY;
     this.width = 48;
     this.height = 48;
     this.speed = 2;
-    this.x = theX;
-    this.y = theY;
     this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
 }
 
 Player.prototype.update = function () {
     if (GAME_ENGINE.keyUp) {
         this.y -= this.speed;
-    }
-    else if (GAME_ENGINE.keyRight) {
+    } else if (GAME_ENGINE.keyRight) {
         this.x += this.speed;
-    }
-    else if (GAME_ENGINE.keyDown) {
+    } else if (GAME_ENGINE.keyDown) {
         this.y += this.speed;
-    }
-    else if (GAME_ENGINE.keyLeft) {
+    } else if (GAME_ENGINE.keyLeft) {
         this.x -= this.speed;
     }
-    else if (GAME_ENGINE.keySpace) {
-        GAME_ENGINE.addEntity(new Balloon(this.x,this.y));
-        console.log("space");
+    
+    if (GAME_ENGINE.keySpace) {
+        GAME_ENGINE.addEntity(new Balloon(this.x, this.y));
 
     }
+
     this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
 }
 

@@ -4,11 +4,18 @@ function Balloon(theX, theY) {
     this.y = (Math.round(theY / 48)) * 48;
     this.width = 48;
     this.height = 48;
+
+    this.timer = 200;
+
     this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
 }
 
 Balloon.prototype.update = function () {
+    if (this.timer === 0) {
+        this.removeFromWorld = true;
+    }
 
+    this.timer--;
 }
 
 Balloon.prototype.draw = function () {
