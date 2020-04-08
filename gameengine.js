@@ -132,13 +132,11 @@ GameEngine.prototype.startInput = function () {
 GameEngine.prototype.addEntity = function (entity) {
     if (entity instanceof Player) {
         this.entities[PLAYER_IDX].push(entity);
-    } 
-    // else if (entity instanceof PowerUp) {
-    //     this.entities[POWERUPS_IDX].push(entity);
-    // } else if (entity instanceof Balloon) {
-    //     this.entities[BALLOONS_IDX].push(entity);
-    // } 
-    else {
+    } else if (entity instanceof SpeedUp || entity instanceof BalloonPlus || entity instanceof BalloonPower) {
+        this.entities[POWERUPS_IDX].push(entity);
+    } else if (entity instanceof Balloon) {
+        this.entities[BALLOONS_IDX].push(entity);
+    } else {
         this.entities[MAP_COMPONENTS_IDX].push(entity);
     }
 }
@@ -150,19 +148,17 @@ GameEngine.prototype.removeEntity = function (entity) {
         if (idx > -1) {
             this.entities[PLAYER_IDX].splice(idx, 1);
         }
-    } 
-    // else if (entity instanceof PowerUp) {
-    //     idx = this.entities[POWERUPS_IDX].indexOf(entity);
-    //     if (idx > -1) {
-    //         this.entities[POWERUPS_IDX].splice(idx, 1);
-    //     }
-    // } else if (entity instanceof Balloon) {
-    //     idx = this.entities[BALLOONS_IDX].indexOf(entity);
-    //     if (idx > -1) {
-    //         this.entities[BALLOONS_IDX].splice(idx, 1);
-    //     }
-    // } 
-    else {
+    } else if (entity instanceof SpeedUp || entity instanceof BalloonPlus || entity instanceof BalloonPower) {
+        idx = this.entities[POWERUPS_IDX].indexOf(entity);
+        if (idx > -1) {
+            this.entities[POWERUPS_IDX].splice(idx, 1);
+        }
+    } else if (entity instanceof Balloon) {
+        idx = this.entities[BALLOONS_IDX].indexOf(entity);
+        if (idx > -1) {
+            this.entities[BALLOONS_IDX].splice(idx, 1);
+        }
+    } else {
         idx = this.entities[MAP_COMPONENTS_IDX].indexOf(entity);
         if (idx > -1) {
             this.entities[MAP_COMPONENTS_IDX].splice(idx, 1);
