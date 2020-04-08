@@ -21,6 +21,11 @@ Player.prototype.update = function () {
     else if (GAME_ENGINE.keyLeft) {
         this.x -= this.speed;
     }
+    else if (GAME_ENGINE.keySpace) {
+        GAME_ENGINE.addEntity(new Balloon(this.x,this.y));
+        console.log("space");
+
+    }
     this.boundingbox = new BoundingBox(this.x, this.y, this.width, this.height);
 }
 

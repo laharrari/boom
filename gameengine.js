@@ -47,6 +47,7 @@ function GameEngine() {
     this.keyLeft = false;
     this.keyRight = false;
     this.keyDown = false;
+    this.keySpace = false;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -93,6 +94,8 @@ GameEngine.prototype.startInput = function () {
             that.keyRight = true;
         } else if (e.code === "ArrowDown") {
             that.keyDown = true;
+        } else if (e.code === "Space") {
+            that.keySpace = true;
         }
 
         //toggle debug mode
@@ -114,6 +117,8 @@ GameEngine.prototype.startInput = function () {
             that.keyRight = false;
         } else if (e.code === "ArrowDown") {
             that.keyDown = false;
+        } else if (e.code === "Space") {
+            that.keySpace = false;
         }
     }, false);
 }
