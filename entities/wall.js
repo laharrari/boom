@@ -12,16 +12,16 @@ function Wall(theX, theY) {
 Wall.prototype.update = function () {
     if (this.boundingbox.collide(myPlayer.boundingbox)) {
         if (myPlayer.x > this.x) {
-            myPlayer.x += myPlayer.speed;
+            myPlayer.x = this.x + this.width;
         }
         if (myPlayer.x < this.x) {
-            myPlayer.x -= myPlayer.speed;
+            myPlayer.x = this.x - myPlayer.width;
         }
         if (myPlayer.y > this.y) {
-            myPlayer.y += myPlayer.speed;
+            myPlayer.y = this.y + this.height;
         }
         if (myPlayer.y < this.y) {
-            myPlayer.y -= myPlayer.speed;
+            myPlayer.y = this.y - myPlayer.height;
         }
     }
 }
